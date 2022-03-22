@@ -1,7 +1,7 @@
 package com.nttdata.lagm.report.controller;
 
 import com.nttdata.lagm.report.dto.response.ConsolidatedProductResponseDto;
-import com.nttdata.lagm.report.model.account.BankProduct;
+import com.nttdata.lagm.report.dto.response.DebitCardBalanceDto;
 import com.nttdata.lagm.report.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,5 +20,11 @@ public class ReportController {
     @ResponseStatus(HttpStatus.OK)
     private Flux<ConsolidatedProductResponseDto> getConsolidatedProductReport(@PathVariable("dni") String dni) {
         return reportService.getConsolidatedProductReport(dni);
+    }
+
+    @GetMapping("/balance/cardNumber/{cardNumber}")
+    @ResponseStatus(HttpStatus.OK)
+    private Mono<DebitCardBalanceDto> getPrincipalBalance(@PathVariable("cardNumber") String cardNumber) {
+        return reportService.getPrincipalBalance(cardNumber);
     }
 }

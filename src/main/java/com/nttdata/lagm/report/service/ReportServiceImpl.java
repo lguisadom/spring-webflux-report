@@ -1,11 +1,13 @@
 package com.nttdata.lagm.report.service;
 
 import com.nttdata.lagm.report.dto.response.ConsolidatedProductResponseDto;
+import com.nttdata.lagm.report.dto.response.DebitCardBalanceDto;
 import com.nttdata.lagm.report.model.account.BankAccount;
 import com.nttdata.lagm.report.model.account.Credit;
 import com.nttdata.lagm.report.proxy.AccountProxy;
 import com.nttdata.lagm.report.proxy.CreditProxy;
 import com.nttdata.lagm.report.proxy.CustomerProxy;
+import com.nttdata.lagm.report.proxy.DebitCardProxy;
 import com.nttdata.lagm.report.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,11 +26,22 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     private CreditProxy creditProxy;
 
+    @Autowired
+    private DebitCardProxy debitCardProxy;
+
     @Override
     public Flux<ConsolidatedProductResponseDto> getConsolidatedProductReport(String dni) {
         ConsolidatedProductResponseDto consolidatedProduct = new ConsolidatedProductResponseDto();
         return Flux.merge(getConsolidatedAccount(dni),getConsolidatedCredit(dni));
 
+    }
+
+    @Override
+    public Mono<DebitCardBalanceDto> getPrincipalBalance(String cardNumber) {
+        return debitCardProxy.findByCardNumber(cardNumber)
+        .flatMap(debitCard -> {
+            return Mono.just(Converter.convertDebitCardToDto(debitCard));
+        });
     }
 
     private Flux<ConsolidatedProductResponseDto> getConsolidatedAccount(String dni) {
