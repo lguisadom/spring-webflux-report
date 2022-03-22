@@ -1,16 +1,18 @@
 package com.nttdata.lagm.report.service;
 
-import com.nttdata.lagm.report.dto.response.ConsolidatedProductResponseDto;
-import com.nttdata.lagm.report.dto.response.DebitCardBalanceDto;
-import com.nttdata.lagm.report.model.account.BankAccount;
-import com.nttdata.lagm.report.model.account.Credit;
-import com.nttdata.lagm.report.proxy.AccountProxy;
-import com.nttdata.lagm.report.proxy.CreditProxy;
-import com.nttdata.lagm.report.proxy.CustomerProxy;
-import com.nttdata.lagm.report.proxy.DebitCardProxy;
-import com.nttdata.lagm.report.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.nttdata.lagm.report.dto.request.MovementRequestBetweenDatesDto;
+import com.nttdata.lagm.report.dto.response.ConsolidatedProductResponseDto;
+import com.nttdata.lagm.report.dto.response.DebitCardBalanceDto;
+import com.nttdata.lagm.report.model.movement.BankingMovement;
+import com.nttdata.lagm.report.proxy.AccountProxy;
+import com.nttdata.lagm.report.proxy.CreditProxy;
+import com.nttdata.lagm.report.proxy.DebitCardProxy;
+import com.nttdata.lagm.report.proxy.MovementProxy;
+import com.nttdata.lagm.report.util.Converter;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -21,17 +23,16 @@ public class ReportServiceImpl implements ReportService {
     private AccountProxy accountProxy;
 
     @Autowired
-    private CustomerProxy customerProxy;
-
-    @Autowired
     private CreditProxy creditProxy;
 
     @Autowired
     private DebitCardProxy debitCardProxy;
 
+    @Autowired
+    private MovementProxy movementProxy;
+
     @Override
     public Flux<ConsolidatedProductResponseDto> getConsolidatedProductReport(String dni) {
-        ConsolidatedProductResponseDto consolidatedProduct = new ConsolidatedProductResponseDto();
         return Flux.merge(getConsolidatedAccount(dni),getConsolidatedCredit(dni));
 
     }
@@ -42,6 +43,11 @@ public class ReportServiceImpl implements ReportService {
         .flatMap(debitCard -> {
             return Mono.just(Converter.convertDebitCardToDto(debitCard));
         });
+    }
+
+    @Override
+    public Flux<BankingMovement> getMovementsBetweenDates(MovementRequestBetweenDatesDto movementRequestBetweenDatesDto) {
+        return movementProxy.getMovementsBetweenDates(movementRequestBetweenDatesDto);
     }
 
     private Flux<ConsolidatedProductResponseDto> getConsolidatedAccount(String dni) {

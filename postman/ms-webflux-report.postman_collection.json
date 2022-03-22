@@ -4,5 +4,93 @@
 		"name": "ms-webflux-report",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
-	"item": []
+	"item": [
+		{
+			"name": "consolidatedProductReportByDni",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/api/v1/report/consolidated/dni/12345678",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"api",
+						"v1",
+						"report",
+						"consolidated",
+						"dni",
+						"12345678"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "principalBalance",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/api/v1/report/balance/cardNumber/1234567890123799",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"api",
+						"v1",
+						"report",
+						"balance",
+						"cardNumber",
+						"1234567890123799"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findMomementsBetweenDates",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/api/v1/report/movements/findBetweenDates/from/22-03-2022/to/23-03-2022",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"api",
+						"v1",
+						"report",
+						"movements",
+						"findBetweenDates",
+						"from",
+						"22-03-2022",
+						"to",
+						"23-03-2022"
+					]
+				}
+			},
+			"response": []
+		}
+	]
 }

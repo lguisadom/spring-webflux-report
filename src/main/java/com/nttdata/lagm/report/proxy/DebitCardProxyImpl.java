@@ -1,6 +1,8 @@
 package com.nttdata.lagm.report.proxy;
 
-import com.nttdata.lagm.report.model.card.DebitCard;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +10,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.nttdata.lagm.report.model.card.DebitCard;
+
+import reactor.core.publisher.Mono;
 
 @Component
 public class DebitCardProxyImpl implements DebitCardProxy {

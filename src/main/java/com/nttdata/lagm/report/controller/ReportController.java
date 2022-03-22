@@ -1,7 +1,9 @@
 package com.nttdata.lagm.report.controller;
 
+import com.nttdata.lagm.report.dto.request.MovementRequestBetweenDatesDto;
 import com.nttdata.lagm.report.dto.response.ConsolidatedProductResponseDto;
 import com.nttdata.lagm.report.dto.response.DebitCardBalanceDto;
+import com.nttdata.lagm.report.model.movement.BankingMovement;
 import com.nttdata.lagm.report.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,5 +28,12 @@ public class ReportController {
     @ResponseStatus(HttpStatus.OK)
     private Mono<DebitCardBalanceDto> getPrincipalBalance(@PathVariable("cardNumber") String cardNumber) {
         return reportService.getPrincipalBalance(cardNumber);
+    }
+
+    @GetMapping("/movements/findBetweenDates/from/{from}/to/{to}")
+    @ResponseStatus(HttpStatus.OK)
+    private Flux<BankingMovement> getMovementsBetweenDates(@PathVariable String from, @PathVariable String to) {
+        MovementRequestBetweenDatesDto movementRequestBetweenDatesDto = new MovementRequestBetweenDatesDto(from, to);
+        return reportService.getMovementsBetweenDates(movementRequestBetweenDatesDto);
     }
 }
